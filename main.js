@@ -28,15 +28,16 @@ class Quiz {
 
             function addLabel() {      
                 
-                return  `<label for="answer-select">Choose an anser:</label>`
+                return  `<label for="answer-select">Choose an answer:</label>`
                  
             }
 
             function addOpenSelect() {
-                return `<select id="pet-select">`
+                return `<select id="answer-select">`
             }
 
             function addOptions() {
+
 
                 var options = "";
 
