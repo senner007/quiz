@@ -17,51 +17,49 @@ class Quiz {
                 var node = document.createElement("LI");               
                 node.innerHTML = addText();
                 node.innerHTML += addLabel();
+                node.innerHTML += addOptions();
                 document.querySelector('ul').appendChild(node); 
-
-                addOptions();
             }
 
             function addText() {
                 return `<p>${question.title} : ${question.content}</p>`
             }
 
-            function addLabel() {      
-                
-                return  `<label for="answer-select">Choose an answer:</label>`
-                 
-            }
-
-            function addOpenSelect() {
-                return `<select id="answer-select">`
+            function addLabel() {          
+                return  `<label for="answer-select">Choose an answer:</label>`   
             }
 
             function addOptions() {
 
-
+                var openSelect = `<select id="answer-select">`
+                var closeSelect = `</select">`
                 var options = "";
 
                 question.options.forEach(option => {
-                    console.log(option)
+                    options += `<option data-is-answer="${option.correct}" value="${option.content}">${option.content.replace(/ *\([^)]*\) */g, "")}</option>`
                 })
 
-                {/* <option value="">--Please choose an option--</option>
-                <option value="dog">Dog</option>
-                <option value="cat">Cat</option>
-                <option value="hamster">Hamster</option>
-                <option value="parrot">Parrot</option>
-                <option value="spider">Spider</option>
-                <option value="goldfish">Goldfish</option> */}
+                return openSelect + options + closeSelect;
             }
+
           
             addQuiz();
-      
-
-          
+     
         })
 
-
     }
+    calculateScore() {
+        var options = document.querySelectorAll('[data-is-answer="true"]');
+
+        var score = 0;
+        options.forEach(option => {
+            score = option.selected ? score + 1 : score
+        })
+        
+        return score
+     
+    }
+  
 }
 
 var quiz = new Quiz('myQuiz');
@@ -69,4 +67,9 @@ console.log(quiz)
 
 quiz.getQuestions().then(data => {
     quiz.renderQuestions(data);
+    quiz.calculateScore();
+})
+
+document.querySelector('button').addEventListener('click', function () {
+   alert('Your score is ' + quiz.calculateScore())
 })
